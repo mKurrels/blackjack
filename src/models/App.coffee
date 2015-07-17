@@ -6,3 +6,16 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
+
+    @listenTo @get('playerHand'), 'stand', ->
+      @dealerPlays()
+
+
+  dealerPlays: ->
+    dealerHand = @get 'dealerHand'
+    dealerHand.first().flip()
+
+    while dealerHand.scores()[0] < 17
+      dealerHand.hit()
+
+
