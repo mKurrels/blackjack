@@ -5,6 +5,7 @@ class window.AppView extends Backbone.View
     <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
+    <div class="winner-container"></div>
   '
 
   events:
@@ -14,12 +15,13 @@ class window.AppView extends Backbone.View
   initialize: ->
     @render()
 
-    @listenTo @model, 'gameFinished', ->
-      console.log @model.get 'winner'
+    # @listenTo @model, 'gameFinished', ->
+    #   console.log @model.get 'winner'
 
   render: ->
     @$el.children().detach()
     @$el.html @template()
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+    @$('.winner-container').html new WinnerView(model: @model).el
 
