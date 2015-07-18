@@ -4,16 +4,17 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    if @scores()[0] < 21
-      deckTopCard = @deck.pop()
-      @add(deckTopCard)
-      return deckTopCard
-    else
-      return false
+    deckTopCard = @deck.pop()
+    @add(deckTopCard)
+
+    if @scores()[0] > 21
+      @trigger 'busted'
+    
+    deckTopCard
 
   stand: ->
     if !@isDealer
-      @trigger('stand')
+      @trigger 'stand'
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
