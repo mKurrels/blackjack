@@ -2,6 +2,8 @@ class window.Hand extends Backbone.Collection
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
+    @on 'busted stand', =>
+      @trigger('isFinished')
 
   hit: ->
     deckTopCard = @deck.pop()
@@ -13,8 +15,7 @@ class window.Hand extends Backbone.Collection
     deckTopCard
 
   stand: ->
-    if !@isDealer
-      @trigger 'stand'
+    @trigger 'stand'
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1

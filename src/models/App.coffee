@@ -8,12 +8,9 @@ class window.App extends Backbone.Model
     @set 'winner', null
 
 
-    @listenTo @get('playerHand'), 'stand', ->
+    @listenTo @get('playerHand'), 'stand busted', ->
       @dealerPlays()
-
-    @listenTo @get('playerHand'), 'busted', ->
       @decideWinner()
-
 
   dealerPlays: ->
     dealerHand = @get 'dealerHand'
@@ -22,9 +19,6 @@ class window.App extends Backbone.Model
     while dealerHand.scores()[0] < 17
       dealerHand.hit()
 
-    @decideWinner()
-
-    @trigger 'gameFinished'
 
   decideWinner: ->
     playerScore = @get('playerHand').scores()[0]
@@ -37,6 +31,7 @@ class window.App extends Backbone.Model
       'player'
     else
       'draw'
+    @trigger 'gameFinished'
 
 
 

@@ -14,6 +14,9 @@ class window.AppView extends Backbone.View
 
   initialize: ->
     @render()
+    @listenTo @model.get('playerHand'), 'isFinished', ->
+      @$el.find('.hit-button').prop "disabled",true
+      @$el.find('.stand-button').prop "disabled",true
 
     # @listenTo @model, 'gameFinished', ->
     #   console.log @model.get 'winner'
