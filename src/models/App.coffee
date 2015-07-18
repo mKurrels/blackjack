@@ -12,9 +12,8 @@ class window.App extends Backbone.Model
       @decideWinner()
 
     @listenTo @get('playerHand'), 'stand', ->
-      @dealerPlays()
       @dealerFlip()
-      @decideWinner()
+      @dealerPlays()
 
     @listenTo @get('dealerHand'), 'stand busted', ->
       @decideWinner()
@@ -25,22 +24,29 @@ class window.App extends Backbone.Model
     
   dealerPlays: ->
     dealerHand = @get 'dealerHand'
+    dealerScore = dealerHand.aceScore(dealerHand.scores())
 
-    while dealerHand.scores()[0] < 17
+    while dealerScore < 17 
       dealerHand.hit()
+      dealerScore = dealerHand.aceScore(dealerHand.scores())
+
+    if dealerScore <= 21
+      dealerHand.trigger 'stand'
 
 
   decideWinner: ->
     playerScore = @get('playerHand').aceScore @get('playerHand').scores()
     dealerScore = @get('dealerHand').aceScore @get('dealerHand').scores()
 
-    # playerScore = 24; dealerScore = 22
-    @set 'winner', if dealerScore > playerScore || playerScore > 21
+    @set 'winner', if playerScore > 21
       'dealer'
-    else if playerScore > dealerScore || dealerScore > 21
+    else if dealerScore > 21
       'player'
-    else
+    else if dealerScore == playerScore
       'draw'
+    else
+      if dealerScore > playerScore then 'dealer' else 'player'
+      
     @trigger 'gameFinished'
 
 
