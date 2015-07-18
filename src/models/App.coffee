@@ -7,14 +7,24 @@ class window.App extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
     @set 'winner', null
 
-
-    @listenTo @get('playerHand'), 'stand busted', ->
-      @dealerPlays()
+    @listenTo @get('playerHand'), 'busted', ->
+      @dealerFlip()
       @decideWinner()
 
-  dealerPlays: ->
+    @listenTo @get('playerHand'), 'stand', ->
+      @dealerPlays()
+      @dealerFlip()
+      @decideWinner()
+
+    @listenTo @get('dealerHand'), 'stand busted', ->
+      @decideWinner()
+
+  dealerFlip: ->
     dealerHand = @get 'dealerHand'
     dealerHand.first().flip()
+    
+  dealerPlays: ->
+    dealerHand = @get 'dealerHand'
 
     while dealerHand.scores()[0] < 17
       dealerHand.hit()
