@@ -21,8 +21,8 @@ class window.App extends Backbone.Model
 
 
   decideWinner: ->
-    playerScore = @get('playerHand').scores()[0]
-    dealerScore = @get('dealerHand').scores()[0]
+    playerScore = @get('playerHand').aceScore @get('playerHand').scores()
+    dealerScore = @get('dealerHand').aceScore @get('dealerHand').scores()
 
     # playerScore = 24; dealerScore = 22
     @set 'winner', if dealerScore > playerScore || playerScore > 21
