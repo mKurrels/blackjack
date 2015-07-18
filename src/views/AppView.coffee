@@ -14,6 +14,9 @@ class window.AppView extends Backbone.View
   initialize: ->
     @render()
 
+    @listenTo @model, 'gameFinished', ->
+      console.log @model.get 'winner'
+
   render: ->
     @$el.children().detach()
     @$el.html @template()

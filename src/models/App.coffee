@@ -5,6 +5,7 @@ class window.App extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
+    @set 'winner', null
 
 
     @listenTo @get('playerHand'), 'stand', ->
@@ -17,5 +18,22 @@ class window.App extends Backbone.Model
 
     while dealerHand.scores()[0] < 17
       dealerHand.hit()
+
+    @winner()
+
+    @trigger 'gameFinished'
+
+  winner: ->
+    playerScore = @get('playerHand').scores()[0]
+    dealerScore = @get('dealerHand').scores()[0]
+
+    # playerScore = 24; dealerScore = 22
+    @set 'winner', if dealerScore > playerScore || playerScore > 21
+      'dealer'
+    else if playerScore > dealerScore || dealerScore > 21
+      'player'
+    else
+      'draw'
+
 
 
